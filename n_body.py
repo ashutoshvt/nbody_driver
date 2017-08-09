@@ -101,6 +101,15 @@ ftensor_results = [
 ]
 
 def initialize_database(database, kwargs):
+    """initializes main database dictionary
+
+    Paraneters
+    ----------
+    kwargs: list
+        List which contains n_body_func (type of calculation to perform,
+        like properties), passed from input
+
+    """
     database['initialized']      = False
     database['inputs_generated'] = False
     database['jobs_complete']    = False
@@ -115,6 +124,16 @@ def initialize_database(database, kwargs):
 
 
 def extend_database(database, kwargs):
+    """Extends database to include relevant properties and results lists 
+        for each n-body
+
+    Paraneters
+    ----------
+    kwargs: list
+        List which contains n_body_func (type of calculation to perform,
+        like properties), passed from input
+
+    """
     for method,n_body_max in database['methods'].items():
         database[method] = collections.OrderedDict()
         database[method]['n_body_max'] = n_body_max
@@ -217,6 +236,14 @@ def extend_database(database, kwargs):
 
 
 def banner(db):
+    """Prints N_body banner, status updates and results generated
+
+    Paraneters
+    ----------
+    db : database
+        Main database
+
+    """
     psi4.print_out('\n')
     psi4.print_out('\t\t ------------------------------ \n')
     psi4.print_out('\t\t             N_Body             \n')
