@@ -1,0 +1,55 @@
+#!/bin/bash
+# Example qsub script for BlueRidge
+# NOTE: You will need to edit the Walltime, Node and Processor Per Node (ppn), Queue, and Module lines
+# to suit the requirements of your job. You will also, of course have to replace the example job
+# commands below with those that run your job.
+
+# Set the walltime, which is the maximum time your job can run in HH:MM:SS
+# Note that if your job exceeds the walltime estimated during submission, the scheduler
+# will kill it. So it is important to be conservative (i.e., to err on the high side)
+# with the walltime that you include in your submission script. 
+#PBS -l walltime=144:00:00
+
+# Set the number of nodes, and the number of processors per node (generally should be 16)
+#PBS -l nodes=1:ppn=16
+
+# Access group
+#PBS -W group_list=blueridge
+
+# Queue name. Replace normal_q with long_q to submit a job to the long queue.
+# See BlueRidge documentation for details on queue parameters.
+#PBS -q normal_q
+
+# This determines which allocation this job's CPU hours are billed to.
+# Replace "youraccount" below with the name of your allocation account.
+#PBS -A crawdad
+
+# Uncomment and add your email address to get an email when your job starts, completes, or aborts
+##PBS -M bgpeyton@vt.edu
+#PBS -m bea
+
+# Add any modules you might require. This example removes all modules and then adds
+# the Intel compiler and mvapich2 MPI modules. Use the module avail command to see a
+# list of available modules.
+
+#cp /groups/crawdad_lab/opt/etc/crawdad_psi4vars.sh mypsi4vars.sh
+#source /groups/crawdad_lab/opt/etc/crawdad_psi4vars.sh -python 2
+
+cd $PBS_O_WORKDIR
+source ~/my_psi4vars.sh -python 2
+pwd
+
+# Print a message before running the program 
+echo "------------------------------------------"
+echo "Running PSI4!" 
+echo "Number of processors = " $PBS_NP
+echo "------------------------------------------"
+mkdir $WORK/$PBS_JOBID
+export PSI_SCRATCH=$WORK/$PBS_JOBID
+# Run the MPI program mpiqd. The -np flag tells MPI how many processes to use. $PBS_NP
+# is an environment variable that holds the number of processes you requested. So if you
+# selected nodes=2:ppn=16 above, $PBS_NP will hold 32.
+
+psi4 -n16
+
+exit;
