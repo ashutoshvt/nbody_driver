@@ -1,0 +1,54 @@
+\documentclass[12pt,a4paper]{article}
+%\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{indentfirst}
+\usepackage{rsc}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{graphicx}
+%\author{Ben Peyton}
+\title{Notes on Taylor and Crawford N-Body Paper\cite{Mach2014}}
+\setlength{\parindent}{2em}
+\begin{document}
+	\maketitle
+	\section{ABSTRACT}
+	 Four chiral compounds were investigated with TD-DFT MB theory. Simple properties like interaction energies, dipole moments, and dipole polarizabilities converge quickly with errors $<$1\% in \underline{three-body}. Specific rotation, however, converged slowly and only achieved errors $<$5\% using \underline{five-} or \underline{six-body}. This is likely due to variation in magnitude and sign of each solute/solvent configuration.
+	\section{INTRODUCTION}
+	Discrepancies between theory and experiment for gas-phase optical rotation (OR) have been significantly reduced. However, most experimental measurements are either done in neat or solvated solutions. This requires the calculation of many bodies, and OR is particularly sensitive to molecule-specific interactions, so an implicit solvent model does not work well. An explicit approach is preferable, as OR is also very dependent on the number and configuration of solvent in the cybotactic (close to the solute) region.
+	
+	To calculate the OR contributions of so many molecules would be computationally expensive, so the many-body expansion seeks to find the contributions from many N-body terms, summed together (subtracting out the lower order terms to avoid double-counting). This is sometimes enhanced by embedding the solvent in some potential (electrostatic or otherwise), or using different levels of theory and/or basis sets for higher-body terms (which should contribute less, in most cases). 
+	
+	The purpose of this work is to determine the effects of many-body expansion on the calculation of higher-order solute properties including frequency-dependent dipole polarizabilities and optical rotations.
+	\section{COMPUTATIONAL DETAILS}
+	Test solutes were placed in a fixed configuration of water molecules in Gromacs. Snapshots were taken, and water molecules in a 5.5 \AA{} radius from the solute's geometric center were kept, resulting in clusters of 6 or 7 water molecules. The many-body expansion was used to calculate the interaction energies, dipole moments and polarizabilities, and specific optical rotations. 
+	
+	Specific rotation is computed using the Rosenfeld optical activity tensor G' \textbf{eq. 4}. This was computed using TD-DFT with the B3LYP functional in Gaussian 09. GIAO's using the length representation of the electric dipole operature ensured origin independence. Basis set was aug-cc-pVDZ.
+	
+	Specific rotation is related to the trace of the G' tensor \textbf{eq. 5}. This tensor is computed for the entire solute-solvent system using a given trunctation level for the many-body expansion. All coordinates were frozen.
+	\section{RESULTS AND DISCUSSION}
+	\noindent
+	\textbf{(S)-2-Chloropropionitrile:} 
+	
+	Interaction energy, dipole moment, and polarizability converge to around 1\% or less @ trimer. Specific rotation for the solvated molecule was found to be larger than that of the individual solute. Specific rotation takes 6-body to converge $<$2\%. Dimers get the correct sign, and trimers come within 13\% (undershot). Inclusion of four-body terms over-shoots and is still around ~13\% error. Five-body terms reduce the error to $<$5\% and six-body terms to $<$2\%.\\
+
+	\noindent
+	\textbf{(S)-Methyloxirane:}
+	
+	Largely the same as (S)-2-Chloroproprionitrile. Specific rotation convergence slightly better. Approaches the correct value from below, and achieves a fortuitously low error at three-body terms. Like (S)-2-Chloroproprionitrile, however, this error then overshoots with the four-body terms, and eventually inclusion of six-body terms was necessary to converge around 1\%.\\
+	
+	\noindent
+	\textbf{(M)-Dimethylallene:}
+	
+	Slower convergence, but qualitatively the same behavior at long wavelengths: approach from below, overshoot at four-body, and converge near six-body. At short wavelengths, however, the specific rotation approaches the "correct" value from above, and exhibits greater oscillation. This is because the Rosenfeld tensor diverges in the vicinity of a resonance. Specifically, this is a result of resonance between the field and excitation frequencies ($\omega$ and $\omega_{j0}$  in eq 4). When they are similar, the denominator in eq 4 "blows up" and creates "poles." This is simply something we have to deal with when field frequencies match excitation frequencies, and so we usually choose wavelengths in "safe" ranges (we usually avoid UV, for example). Even at five-body, errors of nearly 20\% remain. \\
+	
+	\noindent\textbf{(S)-Methylthiirane:}
+	
+	Much more erratic behavior. A previous paper showed that vibrational corrects helped coincidence with experimental results @ long wavelengths, but distorted comparison @ short wavelengths.
+	
+	\section{CONCLUSIONS}
+	The many-body expansion works well for energies as well as dipole moments and polarizabilities. These properties are all either strongly localized or easily partitioned into local contributions. Convergence is much slower when properties depend on long-range or basis-set effects. The expansion is extremely oscillatory and converges erratically. Strong hydrogen bonds in the choice of solvent (water in this case) may make behavior worse; however, even with other solvents, the transfer of chirality from solute to solvent will yield varied optical rotations of each fragment, making the end result still sensitive to the aforementioned effects. Multi-theory QM/MM schemes may be helpful. Truncation schemes may not be effective, as this paper shows that solvent effects on optical rotation extend far into the solvation shell, making truncation difficult.
+\bibliographystyle{rsc}
+\bibliography{../Many-Body.bib}
+\end{document}
