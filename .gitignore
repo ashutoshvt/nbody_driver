@@ -2,3 +2,9 @@ playground/
 database*
 psi.clean*
 timer.dat
+
+#ignore TeX generated files
+*.aux
+*.bbl
+*.blg
+*.log
