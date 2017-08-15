@@ -1,2 +1,60 @@
-# This file should document the underlying equations
-used in the driver
+% This file should document the underlying equations used in the driver
+
+% Document and fonts
+\documentclass[a4paper,12pt]{article}
+\usepackage{amsmath}
+%\usepackage{mathrsfsh}
+
+% Spacing and Sizing
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\AtBeginDocument{\doublespacing}
+
+% Bibliography
+\usepackage{rsc}
+
+% Lists
+%\usepackage{enumitem}
+
+\title{Notes and Equations for Many Body Theory and Counterpoise Corrections}
+\begin{document}
+\maketitle
+
+% Basic Many Body Theory %
+\section{Basic Many Body Expansion (MBE)}
+    The many body expansion is a simple expansion of a many-body system's properties (like energy) into a sum of contributions from individual bodies (monomers) and the interactions between them (\textit{n}-body terms). If all interactions are considered for an N-body system (terms n = 1, ... , N are included) then the method is exact.\cite{Kaplan1986} Any \textit{k}-body interaction term is simply the contribution of the \textit{k}-mer minus all lower-body interactions and the monomer contributions. Approximations are made by only considering up to \textit{k}-body terms, where $k<N$. A property like total energy ($E_{IJK...N}$) can then be written as the sum of the monomer contributions ($E_{i}$) with all desired \textit{n}-body interaction terms($\epsilon^{(n)}$): 
+        \begin{subequations}
+            \begin{equation} \label{eq:mb_energy}
+                E_{IJK...N} = \sum_{i=1}^{N}E_{i} + \sum_{i=1}^{N}\sum_{j>i}^{N}\epsilon_{ij}^{(2)} + \sum_{i=1}^{N}\sum_{j>i}^{N}\sum_{k>j}^{N}\epsilon_{ijk}^{(3)} + ...
+            \end{equation}
+            \begin{equation} \label{eq:mb_energy2}
+                \epsilon_{ij}^{(2)} = E_{ij} - E_{i} - E_{j}
+            \end{equation}
+            \begin{equation} \label{eq:mb_energy3} \begin{aligned}
+                \epsilon_{ijk}^{(3)} = E_{ijk} - (\epsilon_{ij}^{(2)} + \epsilon_{ik}^{(2)} + \epsilon_{jk}^{(2)}) - (E_{i} + E_{j} + E_{k}) \\
+                 = E_{ijk} - (E_{ij} - E_{ik} - E_{jk}) + (E_{i} + E_{j} + E_{k})
+            \end{aligned} \end{equation}
+        \end{subequations}
+
+% Counterpoise Corrections %
+\section{Counterpoise Correction Schemes}
+    In order to account for the Basis Set Superposition Error (BSSE, as described in other documents) various "counterpoise correction" schemes have been implemented. A few of them are described here.
+    \subsection{Boys-Bernardi Counterpoise (CP)\cite{Boys1970}}
+        The CP scheme is solely a method of correcting for the BSSE inherent in the calculation of interaction energies of dimers. That being said, it is used as a starting point for all other relevant counterpoise corrections used today. For a dimer AB, the interaction energy ($\epsilon_{AB}^{(2)}$) can be calculated as the difference between the energy of the dimer ($E_{AB}$) and the energies of the monomers ($E_A$ and $E_B$). To combat BSSE, the CP scheme simply calculates all values in the dimer basis:
+        \begin{equation} \label{eq:cp}
+            \epsilon_{AB}^{(2)} = E_{AB}(AB) - E_{A}(AB) - E_{B}(AB)
+        \end{equation}
+        where the basis set used is in parenthesis. 
+
+    \subsection{Site-Site Function Counterpoise (SSFC)\cite{Wells1983}}
+        The SSFC scheme is a direct generalization of the CP scheme applied to MBE's of any order. All interaction terms are calculated in the "full cluster basis," or the basis of the \textit{N}-mer such that equation (\ref{eq:mb_energy}) becomes:
+        \begin{equation} \label{eq:SSFC_many-body}
+            E_{IJK...N} = \sum_{i=1}^{N}E_{i}(IJK...N) + \sum_{i=1}^{N}\sum_{j>i}^{N}\epsilon_{ij}^{(2)}(IJK...N) + \sum_{i=1}^{N}\sum_{j>i}^{N}\sum_{k>j}^{N}\epsilon_{ijk}^{(3)}(IJK...N) + ...
+        \end{equation} 
+    where equations (\ref{eq:mb_energy2}) and (\ref{eq:mb_energy3}) similarly include the \textit{N}-mer basis.
+
+        
+\newpage
+\bibliographystyle{rsc}
+\bibliography{Many-Body.bib}
+\end{document}
