@@ -53,6 +53,24 @@
         \end{equation} 
     where equations (\ref{eq:mb_energy2}) and (\ref{eq:mb_energy3}) similarly include the \textit{N}-mer basis.
 
+    \subsection{Valiron-Mayer Function Counterpoise (VMFC)\cite{Valiron1997}}
+        A different generalization of the CP scheme is the VMFC scheme. Instead of using the full cluster basis for everything, each \textit{k}-body contribution term is calculated in the \textit{k}-mer basis- the original monomer energies are calculated in the monomer basis, dimer corrections in the dimer basis, etc. It should be noted that even the monomers calculated for the dimer correction are calculated in the dimer basis as well, resulting in the following:
+            \begin{subequations}
+                \begin{equation} \label{eq:vmfc}
+                    E_{IJK...N} = \sum_{i=1}^{N}E_{i}(I) + \sum_{i=1}^{N}\sum_{j>i}^{N}\epsilon_{ij}^{(2)}(IJ) + \sum_{i=1}^{N}\sum_{j>i}^{N}\sum_{k>j}^{N}\epsilon_{ijk}^{(3)}(IJK) + ...
+                \end{equation} 
+                \begin{equation} \label{eq:vmfc2}
+                    \epsilon_{ij}^{(2)}(IJ) = E_{ij}(IJ) - E_{i}(IJ) - E_{j}(IJ)
+                \end{equation}
+                \begin{equation} \label{eq:vmfc3} \begin{aligned}
+                    \epsilon_{ijk}^{(3)}(IJK) = E_{ijk}(IJK) - (\epsilon_{ij}^{(2)}(IJK) + \epsilon_{ik}^{(2)}(IJK) + \epsilon_{jk}^{(2)})(IJK) \\
+                    - (E_{i}(IJK) + E_{j}(IJK) + E_{k}(IJK)) \\
+                    = E_{ijk}(IJK) - (E_{ij}(IJK) - E_{ik}(IJK) - E_{jk}(IJK)) \\
+                    + (E_{i}(IJK) + E_{j}(IJK) + E_{k}(IJK))
+                \end{aligned} \end{equation}
+            \end{subequations}
+        One can see that even if all interactions are considered, the VMFC total energy will not add up to the full cluster energy. This is possibly a correction to "intramolecular" BSSE effects. It also removes from each subcluster contribution an "unphysical" dependence on the basis functions of other unrelated subclusters.
+
         
 \newpage
 \bibliographystyle{rsc}
